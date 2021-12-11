@@ -1,0 +1,34 @@
+#Import libraries
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
+import xlsxwriter
+import os
+import time
+
+
+def scoresfixtures(link,ids):
+    '''
+    Description: This Class picks all the games that had in one season and combinate all links to one especific list
+    
+    Inputs:
+        - link: The link of the main page that have all season games desired.
+        - ids: The ID of the championship table
+        
+    Outputs:
+        - especific list that has all the links os all matches of the season
+    
+    
+    '''
+    req = requests.get(link)
+    if req.status_code == 200:
+        content = req.content
+
+    soup = BeautifulSoup(content, 'html.parser')
+    tb = soup.find(id=ids)
+
+    s1= []
+    s2= []
+    for i in tb.find_all("a"):
+            s1.append(str(i))
+            s2.append(str(i.get_text('href')))
